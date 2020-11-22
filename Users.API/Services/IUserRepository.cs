@@ -7,7 +7,7 @@ namespace Users.API.Services
     public interface IUserRepository
     {
         IEnumerable<User> GetUsers();
-        IEnumerable<User> GetUsers(string location);
+        IEnumerable<User> GetUsers(string location, string searchQuery);
         User GetUser(Guid userId);
         IEnumerable<User> GetUsers(IEnumerable<Guid> userIds);
         void AddUser(User user);

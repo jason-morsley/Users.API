@@ -58,16 +58,32 @@ namespace Users.API.Services
             return _context.Users.FirstOrDefault(a => a.Id == userId);
         }
 
-        public IEnumerable<User> GetUsers(string location)
+        public IEnumerable<User> GetUsers(string location, string searchQuery)
         {
-            if (string.IsNullOrWhiteSpace(location))
+            if (string.IsNullOrWhiteSpace(location)
+                && string.IsNullOrWhiteSpace(searchQuery))
             {
                 return GetUsers();
 
             }
 
-            location = location.Trim();
-            return _context.Users.Where(a => a.Location == location).ToList();
+            var collection = _context.Users as IQueryable<User>;
+
+            if (!string.IsNullOrWhiteSpace(location))
+            {
+                location = location.Trim();
+                collection = collection.Where(a => a.Location == location);
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchQuery))
+            {
+                searchQuery = searchQuery.Trim();
+                collection = collection.Where(a => a.Location.Contains(searchQuery)
+                                                   || a.FirstName.Contains(searchQuery)
+                                                   || a.LastName.Contains(searchQuery));
+            }
+
+            return collection.ToList();
         }
 
         public IEnumerable<User> GetUsers()

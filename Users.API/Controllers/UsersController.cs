@@ -27,9 +27,9 @@ namespace Users.API.Controllers
 
         [HttpGet()]
         [HttpHead]
-        public ActionResult<IEnumerable<UserDto>> GetUsers(string location)
+        public ActionResult<IEnumerable<UserDto>> GetUsers(string location, string searchQuery)
         {
-            var usersFromRepo = _userRepository.GetUsers(location);
+            var usersFromRepo = _userRepository.GetUsers(location, searchQuery);
             return Ok(_mapper.Map<IEnumerable<UserDto>>(usersFromRepo));
         }
 
