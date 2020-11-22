@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Users.API.DbContexts;
+using Users.API.ResourceParameters;
 
 namespace Users.API.Services
 {
@@ -58,10 +59,15 @@ namespace Users.API.Services
             return _context.Users.FirstOrDefault(a => a.Id == userId);
         }
 
-        public IEnumerable<User> GetUsers(string location, string searchQuery)
+        public IEnumerable<User> GetUsers(UsersResourceParameters usersResourceParameters)
         {
-            if (string.IsNullOrWhiteSpace(location)
-                && string.IsNullOrWhiteSpace(searchQuery))
+            if (usersResourceParameters == null)
+            {
+                throw new ArgumentNullException(nameof(usersResourceParameters));
+            }
+
+            if (string.IsNullOrWhiteSpace(usersResourceParameters.Location)
+                && string.IsNullOrWhiteSpace(usersResourceParameters.SearchQuery))
             {
                 return GetUsers();
 
@@ -69,15 +75,15 @@ namespace Users.API.Services
 
             var collection = _context.Users as IQueryable<User>;
 
-            if (!string.IsNullOrWhiteSpace(location))
+            if (!string.IsNullOrWhiteSpace(usersResourceParameters.Location))
             {
-                location = location.Trim();
+                var location = usersResourceParameters.Location.Trim();
                 collection = collection.Where(a => a.Location == location);
             }
 
-            if (!string.IsNullOrWhiteSpace(searchQuery))
+            if (!string.IsNullOrWhiteSpace(usersResourceParameters.SearchQuery))
             {
-                searchQuery = searchQuery.Trim();
+                var searchQuery = usersResourceParameters.SearchQuery.Trim();
                 collection = collection.Where(a => a.Location.Contains(searchQuery)
                                                    || a.FirstName.Contains(searchQuery)
                                                    || a.LastName.Contains(searchQuery));

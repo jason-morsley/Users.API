@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Users.API.Helpers;
 using Users.API.Models;
+using Users.API.ResourceParameters;
 using Users.API.Services;
 
 namespace Users.API.Controllers
@@ -27,9 +28,9 @@ namespace Users.API.Controllers
 
         [HttpGet()]
         [HttpHead]
-        public ActionResult<IEnumerable<UserDto>> GetUsers(string location, string searchQuery)
+        public ActionResult<IEnumerable<UserDto>> GetUsers([FromQuery] UsersResourceParameters usersResourceParameters)
         {
-            var usersFromRepo = _userRepository.GetUsers(location, searchQuery);
+            var usersFromRepo = _userRepository.GetUsers(usersResourceParameters);
             return Ok(_mapper.Map<IEnumerable<UserDto>>(usersFromRepo));
         }
 
