@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Users.API.Helpers;
+using Users.API.Models;
 using Users.API.Services;
 
 namespace Users.API.Controllers
@@ -23,7 +25,19 @@ namespace Users.API.Controllers
         public IActionResult GetUsers()
         {
             var usersFromRepo = _userRepository.GetUsers();
-            return Ok(usersFromRepo);
+            var users = new List<UserDto>();
+
+            foreach (var user in usersFromRepo)
+            {
+                users.Add(new UserDto()
+                {
+                    Id = user.Id,
+                    Name = $"{user.FirstName} {user.LastName}",
+                    Age = user.DateOfBirth.GetAgeFromDob()
+                });
+            }
+
+            return Ok(users);
         }
 
         [HttpGet("{userId:guid}")]
