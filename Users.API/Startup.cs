@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,7 +21,11 @@ namespace Users.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-           services.AddControllers();
+           services.AddControllers(setupAction =>
+           {
+               setupAction.ReturnHttpNotAcceptable = true;
+
+           }).AddXmlDataContractSerializerFormatters();
              
             services.AddScoped<IUserRepository, UserRepository>();
 
