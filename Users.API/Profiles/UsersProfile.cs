@@ -19,6 +19,9 @@ namespace Users.API.Profiles
                 .ForMember(
                     dest => dest.Age,
                     opt => opt.MapFrom(src => src.DateOfBirth.GetAgeFromDob()));
+
+            CreateMap<Models.UserForCreationDto, Entities.User>();
+
         }
     }
 }

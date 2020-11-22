@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Users.API.Entities;
 using Users.API.Helpers;
 using Users.API.Models;
 using Users.API.ResourceParameters;
@@ -26,7 +27,7 @@ namespace Users.API.Controllers
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        [HttpGet()]
+        [HttpGet]
         [HttpHead]
         public ActionResult<IEnumerable<UserDto>> GetUsers([FromQuery] UsersResourceParameters usersResourceParameters)
         {
@@ -34,7 +35,7 @@ namespace Users.API.Controllers
             return Ok(_mapper.Map<IEnumerable<UserDto>>(usersFromRepo));
         }
 
-        [HttpGet("{userId}")]
+        [HttpGet("{userId}", Name = "GetUser")]
         public IActionResult GetUser(Guid userId)
         {
             var userFromRepo = _userRepository.GetUser(userId);
@@ -45,6 +46,17 @@ namespace Users.API.Controllers
             }
 
             return Ok(_mapper.Map<UserDto>(userFromRepo));
+        }
+
+        [HttpPost]
+        public ActionResult<UserDto> CreateUser(UserForCreationDto user)
+        {
+            var userEntity = _mapper.Map<Entities.User>(user);
+            _userRepository.AddUser(userEntity);
+            _userRepository.Save();
+
+            var userToReturn = _mapper.Map<UserDto>(userEntity);
+            return CreatedAtRoute("GetUser", new {userId = userToReturn.Id}, userToReturn);
         }
     }
 }
