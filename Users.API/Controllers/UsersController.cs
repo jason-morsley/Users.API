@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Users.API.Helpers;
 using Users.API.Models;
@@ -14,30 +15,23 @@ namespace Users.API.Controllers
 
     public class UsersController : ControllerBase 
     {
-        private IUserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UsersController(IUserRepository userRepository)
+        public UsersController(IUserRepository userRepository,
+            IMapper mapper)
         {
             _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         [HttpGet()]
-        public IActionResult GetUsers()
+        public ActionResult<IEnumerable<UserDto>> GetUsers()
         {
             var usersFromRepo = _userRepository.GetUsers();
             var users = new List<UserDto>();
 
-            foreach (var user in usersFromRepo)
-            {
-                users.Add(new UserDto()
-                {
-                    Id = user.Id,
-                    Name = $"{user.FirstName} {user.LastName}",
-                    Age = user.DateOfBirth.GetAgeFromDob()
-                });
-            }
-
-            return Ok(users);
+            return Ok(_mapper.Map<IEnumerable<UserDto>>(usersFromRepo));
         }
 
         [HttpGet("{userId:guid}")]
@@ -50,7 +44,7 @@ namespace Users.API.Controllers
                 return NotFound();
             }
 
-            return Ok(userFromRepo);
+            return Ok(_mapper.Map<UserDto>(userFromRepo));
         }
     }
 }
