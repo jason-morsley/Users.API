@@ -58,6 +58,18 @@ namespace Users.API.Services
             return _context.Users.FirstOrDefault(a => a.Id == userId);
         }
 
+        public IEnumerable<User> GetUsers(string location)
+        {
+            if (string.IsNullOrWhiteSpace(location))
+            {
+                return GetUsers();
+
+            }
+
+            location = location.Trim();
+            return _context.Users.Where(a => a.Location == location).ToList();
+        }
+
         public IEnumerable<User> GetUsers()
         {
             return _context.Users.ToList<User>();

@@ -18,7 +18,9 @@ namespace Users.API.Entities
         public string LastName { get; set; }
 
         [Required]
-        public DateTimeOffset DateOfBirth { get; set; }          
+        public DateTimeOffset DateOfBirth { get; set; }
+
+        public string Location { get; set; }
 
         //Email(s)
         //Phone/Mobile Number(s)

@@ -26,15 +26,14 @@ namespace Users.API.Controllers
         }
 
         [HttpGet()]
-        public ActionResult<IEnumerable<UserDto>> GetUsers()
+        [HttpHead]
+        public ActionResult<IEnumerable<UserDto>> GetUsers(string location)
         {
-            var usersFromRepo = _userRepository.GetUsers();
-            var users = new List<UserDto>();
-
+            var usersFromRepo = _userRepository.GetUsers(location);
             return Ok(_mapper.Map<IEnumerable<UserDto>>(usersFromRepo));
         }
 
-        [HttpGet("{userId:guid}")]
+        [HttpGet("{userId}")]
         public IActionResult GetUser(Guid userId)
         {
             var userFromRepo = _userRepository.GetUser(userId);

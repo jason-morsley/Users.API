@@ -24,6 +24,7 @@ namespace Users.API.DbContexts
                     FirstName = "Jason",
                     LastName = "Morsley",
                     DateOfBirth = new DateTime(1998, 12, 5),
+                    Location = "Luton"
                 },
                 new User()
                 {
@@ -31,6 +32,7 @@ namespace Users.API.DbContexts
                     FirstName = "John",
                     LastName = "Doe",
                     DateOfBirth = new DateTime(1982, 5, 21),
+                    Location = "London"
                 },
                 new User()
                 {
@@ -38,6 +40,7 @@ namespace Users.API.DbContexts
                     FirstName = "Joe",
                     LastName = "Bloggs",
                     DateOfBirth = new DateTime(2000, 12, 16),
+                    Location = "Northampton"
                 },
                 new User()
                 {
@@ -45,6 +48,7 @@ namespace Users.API.DbContexts
                     FirstName = "Jane",
                     LastName = "Doe",
                     DateOfBirth = new DateTime(1982, 3, 6),
+                    Location = "Hull"
                 },
                 new User()
                 {
@@ -52,6 +56,7 @@ namespace Users.API.DbContexts
                     FirstName = "Tom",
                     LastName = "Reyson",
                     DateOfBirth = new DateTime(1969, 11, 23),
+                    Location = "Northampton"
                 },
                 new User()
                 {
@@ -59,6 +64,7 @@ namespace Users.API.DbContexts
                     FirstName = "Dick",
                     LastName = "Ridley",
                     DateOfBirth = new DateTime(1970, 4, 5),
+                    Location = "Luton"
                 },
                 new User()
                 {
@@ -66,6 +72,7 @@ namespace Users.API.DbContexts
                     FirstName = "Harry",
                     LastName = "McAlister",
                     DateOfBirth = new DateTime(1990, 10, 11),
+                    Location = "London"
                 }
                 );
             base.OnModelCreating(modelBuilder);
