@@ -58,5 +58,12 @@ namespace Users.API.Controllers
             var userToReturn = _mapper.Map<UserDto>(userEntity);
             return CreatedAtRoute("GetUser", new {userId = userToReturn.Id}, userToReturn);
         }
+
+        [HttpOptions]
+        public IActionResult GetUserOptions()
+        {
+            Response.Headers.Add("Allow", "GET,OPTIONS,POST");
+            return Ok();
+        }
     }
 }

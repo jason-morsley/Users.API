@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 using Users.API.DbContexts;
 using Users.API.Services;
 
@@ -28,9 +29,13 @@ namespace Users.API
            {
                setupAction.ReturnHttpNotAcceptable = true;
 
-           }).AddXmlDataContractSerializerFormatters();
+           }).AddNewtonsoftJson(setupAction =>
+                   {
+                       setupAction.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                   })
+               .AddXmlDataContractSerializerFormatters(); // Whichever Serializer is added first will be default.
 
-           services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
              
            services.AddScoped<IUserRepository, UserRepository>();
 
