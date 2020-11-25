@@ -65,5 +65,21 @@ namespace Users.API.Controllers
             Response.Headers.Add("Allow", "GET,OPTIONS,POST");
             return Ok();
         }
+
+        [HttpDelete("{userId}")]
+        public ActionResult DeleteUser(Guid userId)
+        {
+            var userFromRep = _userRepository.GetUser(userId);
+
+            if (userFromRep == null)
+            {
+                return NotFound();
+            }
+
+            _userRepository.DeleteUser(userFromRep);
+            _userRepository.Save();
+
+            return NoContent();
+        }
     }
 }
